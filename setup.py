@@ -35,6 +35,25 @@ try:
 except:
     REQUIREMENTS = None
 
+# These test dependencies are default
+tests_require = [
+    'django-setuptest',
+    'webdriverplus'
+]
+
+# Additional test dependencies
+try:
+    # For Python < 2.7, we need argparse
+    import platform
+    python_version = map(int, platform.python_version_tuple()[:2])
+    if python_version[0] == 2 and python_version[1] < 7:
+        tests_require.append('argparse')
+
+except:
+    # This code is allowed to fail as dependencies might not be installed
+    pass
+
+
 setup(
     name='django-newsletter',
     version="0.4.1",
@@ -55,8 +74,5 @@ setup(
                  'Programming Language :: Python',
                  'Topic :: Utilities'],
     test_suite='setuptest.setuptest.SetupTestSuite',
-    tests_require=(
-        'django-setuptest',
-        'argparse',  # apparently needed by django-setuptest on python 2.6
-    ),
+    tests_require=tests_require
 )

@@ -1,0 +1,30 @@
+{% extends "newsletter/message/message_base.html" %}
+{% load i18n %}
+{% load tz %}
+{% load url from future %}{% load thumbnail %}
+{% block content %}
+<table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateBody">
+    <tr>
+        <td valign="top" class="bodyContent">
+            <h1>{{ newsletter.title }}</h1>
+            <h2>{{ message.title }}</h2>
+            {% for article in message.articles.all %}
+                <h3>{{ article.title }}</h3>
+                 
+                <div>{{ article.text|safe }}</div>
+                
+                {% if article.url %}
+                    <div><a href="{{ article.url }}">Read more</div></a>
+                {% endif %}
+            {% endfor %}
+            
+            <ul>
+                {% if submission.publish %}
+                <li><a href="http://{{ site.domain }}{{ submission.get_absolute_url }}">Read message online</a></li>
+                {% endif %}
+                <li><a href="http://{{ site.domain }}{% url "newsletter_unsubscribe_request" newsletter.slug %}">Unsubscribe</a></li>
+            </ul>
+        </td>
+    </tr>
+</table>
+{% endblock %}

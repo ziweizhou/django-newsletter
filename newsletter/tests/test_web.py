@@ -747,7 +747,13 @@ class AnonymousSubscribeTestCase(WebSubscribeTestCase,
         belonging to an existing user.
         """
 
-        from django.contrib.auth.models import User
+        try:
+            from django.contrib.auth import get_user_model
+        except ImportError: # django < 1.5
+            from django.contrib.auth.models import User
+        else:
+            User = get_user_model()
+            
         password = User.objects.make_random_password()
         user = User.objects.create_user(
             'john', 'lennon@thebeatles.com', password)
